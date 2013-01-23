@@ -1,16 +1,18 @@
 __all__ = [
     'functions', 'generate',
-    '_if', '_gt', '_eq', '_add', '_sub', '_mul', '_print'
+    '_if', '_gt', '_lt', '_eq', '_add', '_sub', '_mul', '_print', '_defun'
 ]
 
 functions = {
     '>': '_gt',
+    '<': '_lt',
     '=': '_eq',
     '+': '_add',
     '-': '_sub',
     '*': '_mul',
     'if': '_if',
-    'print': '_print'
+    'print': '_print',
+    'defun': '_defun'
 }
 
 def _if(arg1, arg2, arg3):
@@ -18,6 +20,9 @@ def _if(arg1, arg2, arg3):
 
 def _gt(*args):
     return reduce(lambda a, b: a > b, args)
+
+def _lt(*args):
+    return reduce(lambda a, b: a < b, args)
 
 def _eq(*args):
     return reduce(lambda a, b: a == b, args)
@@ -37,13 +42,26 @@ def _print(*args):
 def complex(exp):
     return any([isinstance(e, list) for e in exp])
 
-def function(symbol):
-    return functions[symbol]
+def resolve(symbol):
+    if symbol in functions:
+        return functions[symbol]
+
+    return symbol
 
 def generate(exp):
-    for i, e in enumerate(exp):
-        if isinstance(e, list):
-            exp[i] = generate(e)
+    head = exp[0]
+    tail = exp[1:]
 
-    return '%s(%s)' % (function(exp[0]), ','.join(exp[1:]))
+    if head == 'defun':
+        name = tail[0]
+        args = tail[1]
+        body = generate(tail[2])
+
+        return 'def %s(%s): return %s' % (name, ','.join(args), body)
+    else:
+        for i, e in enumerate(exp):
+            if isinstance(e, list):
+                exp[i] = generate(e)
+
+        return '%s(%s)' % (resolve(exp[0]), ','.join(exp[1:]))
 
