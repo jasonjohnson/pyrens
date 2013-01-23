@@ -32,3 +32,6 @@ print power(1, 2, 3)
 print power(5, 2, 1)
 print power(7, 8, 9)
 
+# Need to support string literals!
+print Reader('(print "a long message")').get()
+

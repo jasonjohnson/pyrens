@@ -1,6 +1,6 @@
 __all__ = [
     'functions', 'generate',
-    '_if', '_gt', '_lt', '_eq', '_add', '_sub', '_mul', '_print', '_defun'
+    '_if', '_gt', '_lt', '_eq', '_add', '_sub', '_mul', '_print'
 ]
 
 functions = {
@@ -11,8 +11,7 @@ functions = {
     '-': '_sub',
     '*': '_mul',
     'if': '_if',
-    'print': '_print',
-    'defun': '_defun'
+    'print': '_print'
 }
 
 def _if(arg1, arg2, arg3):
