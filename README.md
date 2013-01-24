@@ -1,7 +1,7 @@
 Pyrens
 ======
 
-Pyrens is an experiment to develop a Lisp runtime for Python. At this time, it is not considered viable for any production use.
+Pyrens is an experimental Lisp runtime for Python. At this time, it is not considered production-worthy.
 
 Example
 -------
