@@ -6,7 +6,7 @@ class Writer(object):
         return self.generate()
 
     def generate(self):
-        generator = None
+        generator = self._generic
         generators = {
             'let': self._let,
             'defun': self._defun
@@ -17,8 +17,6 @@ class Writer(object):
 
         if head in generators:
             generator = generators[head]
-        else:
-            generator = self._generic
 
         return generator(head, tail)
 
