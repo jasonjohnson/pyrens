@@ -4,6 +4,15 @@ Pyrens
 Pyrens is an experimental Lisp runtime for Python. It is not considered production-worthy.
 
 
+Objectives
+----------
+* Full file conversion, from .lisp to .py
+* Full Python interop
+* Support a large subset of Common Lisp language features
+* Good Python citizenship. Generated files will practice proper namespacing, documentation and styling
+* Identify features more easily abstracted into the Pyrens runtime than implemented in Python directly
+
+
 Example
 -------
 
@@ -32,15 +41,6 @@ This being valid Python, it can be evaluated to its result:
 ```python
 print eval("_if(_gt(2,_add(9,7)),_add(1,1),700)") # prints '700'
 ```
-
-
-Objectives
-----------
-* Full file conversion, from .lisp to .py
-* Full Python interop
-* Support a large subset of Common Lisp language features
-* Good Python citizenship. Generated files will practice proper namespacing, documentation and styling
-* Identify features more easily abstracted into the Pyrens runtime than implemented in Python directly
 
 
 Functions
