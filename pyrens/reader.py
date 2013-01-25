@@ -8,15 +8,14 @@ class Reader(object):
         self.scanned = None
         self.collapsed = None
 
+    def get(self):
         self.pad()
         self.explode()
         self.clean()
         self.scan()
         self.collapse()
-        self.finalize()
 
-    def get(self):
-        return list(self.collapsed)
+        return self.finalize()
 
     def pad(self):
         text = self.text
@@ -79,5 +78,5 @@ class Reader(object):
             except ValueError:
                 pass
 
-        self.collapsed = self.collapsed.pop()
+        return self.collapsed.pop()
 
