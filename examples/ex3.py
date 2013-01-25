@@ -1,0 +1,1 @@
+def power(arg1,arg2,arg3): return _if(_gt(_mul(arg1,arg2,arg3),20),100,200)
