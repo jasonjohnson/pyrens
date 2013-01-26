@@ -1,24 +1,32 @@
-from pyrens.runtime import *
+from glob import glob
 from pyrens.reader import Reader
 from pyrens.writer import Writer
 
-files = ['examples/ex1.lisp', 'examples/ex2.lisp', 'examples/ex3.lisp']
+files = glob('examples/*.lisp')
+files.sort()
 
-# Generate .py files for each .lisp input file
 for f in files:
     with open(f, 'r') as infile:
         with open(f.replace('lisp', 'py'), 'w') as outfile:
             print
             print "Processing: %s" % f
 
-            e = infile.read().strip()
-            print e
+            i = infile.read().strip()
+            print i
 
-            r = Reader(e).get()
+            r = Reader(i).get()
             print r
 
-            w = Writer(r).get()
-            print w
+            w = Writer(r)
+            print w.get_functions()
+            print w.get()
 
-            outfile.write(w)
+            outfile.write("from pyrens.runtime import *")
+            outfile.write("\n")
+
+            for func in w.get_functions():
+                outfile.write(func)
+                outfile.write("\n")
+
+            outfile.write(w.get())
 
