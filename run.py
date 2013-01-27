@@ -2,31 +2,23 @@ from glob import glob
 from pyrens.reader import Reader
 from pyrens.writer import Writer
 
-files = glob('examples/*.lisp')
-files.sort()
+from pyrens.io.infile import Infile
+from pyrens.io.outfile import Outfile
 
-for f in files:
-    with open(f, 'r') as infile:
-        with open(f.replace('lisp', 'py'), 'w') as outfile:
-            print
-            print "Processing: %s" % f
+file_names = glob('examples/*.lisp')
+file_names.sort()
 
-            i = infile.read().strip()
-            print i
+for file_name_in in file_names:
+    file_name_out = file_name_in.replace('lisp', 'py')
 
-            r = Reader(i).get()
-            print r
+    print "<< Loading... %s" % file_name_in
 
-            w = Writer(r)
-            print w.get_functions()
-            print w.get()
+    infile = Infile(file_name_in)
+    infile.scan()
 
-            outfile.write("from pyrens.runtime import *")
-            outfile.write("\n")
+    print ">> Writing... %s" % file_name_out
 
-            for func in w.get_functions():
-                outfile.write(func)
-                outfile.write("\n")
-
-            outfile.write(w.get())
+    outfile = Outfile(file_name_out)
+    outfile.load(infile.expressions())
+    outfile.write()
 

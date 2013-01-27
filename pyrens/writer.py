@@ -1,7 +1,8 @@
 class Writer(object):
-    def __init__(self, exp):
+    def __init__(self, exp, seed=0):
         self.exp = exp
         self.result = ""
+        self.seed = seed
         self.mangled = 0
         self.mangled_names = []
         self.functions = []
@@ -18,12 +19,12 @@ class Writer(object):
 
         return self.functions
 
-    def generate(self, exp=None, bindings=None):
+    def generate(self, exp=None, callables=None):
         if not exp:
             exp = self.exp
 
-        if not bindings:
-            bindings = []
+        if not callables:
+            callables = []
 
         generator = self._generic
         generators = {
@@ -38,12 +39,12 @@ class Writer(object):
         if head in generators:
             generator = generators[head]
 
-        if bindings:
-            return generator(head, tail, bindings)
+        if callables:
+            return generator(head, tail, callables)
 
         return generator(head, tail)
 
-    def resolve(self, symbol):
+    def resolve(self, symbol, callables):
         symbols = {
             '>': '_gt',
             '<': '_lt',
@@ -58,6 +59,9 @@ class Writer(object):
         if symbol in symbols:
             return symbols[symbol]
 
+        if symbol in callables:
+            return symbol
+
         return None
 
     def complex(self, exp):
@@ -65,7 +69,7 @@ class Writer(object):
 
     def mangle(self):
         self.mangled += 1
-        self.mangled_names.append('_fn_%d' % self.mangled)
+        self.mangled_names.append('_fn_%d_%d' % (self.seed, self.mangled))
         return self.mangled_names[-1]
 
     def function(self, name='', args='', body=''):
@@ -75,7 +79,8 @@ class Writer(object):
         mangle = self.mangle()
 
         let = []
-        mangled = []
+        callables = []
+
         bindings = tail[0]
 
         for binding in bindings:
@@ -85,12 +90,12 @@ class Writer(object):
             value = self.generate(value)
 
             if value in self.mangled_names:
-                mangled.append(name)
+                callables.append(name)
 
             let.append('%s = %s' % (name, value))
 
         self.function(mangle, '', '%s; return %s' % \
-                (';'.join(let), self.generate(tail[1], bindings=mangled)))
+                (';'.join(let), self.generate(tail[1], callables=callables)))
 
         return '%s()' % mangle
 
@@ -110,18 +115,15 @@ class Writer(object):
 
         return mangle
 
-    def _generic(self, head, tail, bindings=None):
-        if not bindings:
-            bindings = []
+    def _generic(self, head, tail, callables=None):
+        if not callables:
+            callables = []
 
         for i, e in enumerate(tail):
             if isinstance(e, list):
-                tail[i] = self.generate(e, bindings)
+                tail[i] = self.generate(e, callables)
 
-        if head in bindings:
-            symbol = head
-        else:
-            symbol = self.resolve(head)
+        symbol = self.resolve(head, callables)
 
         if not symbol:
             return self._raw(head, tail)
@@ -129,7 +131,11 @@ class Writer(object):
         return '%s(%s)' % (symbol, ','.join(tail))
 
     def _raw(self, head, tail=None):
-        if not tail:
-            tail = []
+        if isinstance(head, str) and isinstance(tail, str):
+            return '%s%s' % (head, tail)
 
-        return ' '.join([head] + tail)
+        if isinstance(head, str) and isinstance(tail, list):
+            if len(tail) > 0 or head[0].isalpha():
+                return '%s(%s)' % (head, ','.join(tail))
+
+        return head
