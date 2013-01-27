@@ -1,4 +1,5 @@
 class Writer(object):
+
     def __init__(self, exp, seed=0):
         self.exp = exp
         self.result = ""

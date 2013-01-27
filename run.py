@@ -1,7 +1,4 @@
 from glob import glob
-from pyrens.reader import Reader
-from pyrens.writer import Writer
-
 from pyrens.io.infile import Infile
 from pyrens.io.outfile import Outfile
 
