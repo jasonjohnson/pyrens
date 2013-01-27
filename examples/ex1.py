@@ -13,4 +13,6 @@ func4 = _fn_6_1
 _print(func1(x,y,z))
 _print(func2(x,y))
 _print(func3(x))
+_print("Hello!")
+_print("Hello Lisp World!")
 func4()

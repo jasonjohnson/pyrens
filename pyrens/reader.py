@@ -12,6 +12,7 @@ class Reader(object):
         self.pad()
         self.explode()
         self.clean()
+        self.string()
         self.scan()
         self.collapse()
 
@@ -36,6 +37,18 @@ class Reader(object):
 
     def clean(self):
         self.cleaned = filter(None, self.exploded)
+
+    def string(self):
+        for i, x in enumerate(self.cleaned):
+            if isinstance(x, str) and x[0] == '"':
+                if x[-1] == '"':
+                    break
+                else:
+                    for j, y in enumerate(self.cleaned[i:]):
+                        if y[-1] == '"':
+                            self.cleaned[i:i+j+1] = \
+                                    [' '.join(self.cleaned[i:i+j+1])]
+                            self.string()
 
     def scan(self):
         self.scanned = []

@@ -10,4 +10,6 @@
 (print (func1 x y z))
 (print (func2 x y))
 (print (func3 x))
+(print "Hello!")
+(print "Hello Lisp World!")
 (func4)
