@@ -1,3 +1,23 @@
+SYMBOLS = {
+    '>': 'gt_',
+    '<': 'lt_',
+    '=': 'eq_',
+    '+': 'add_',
+    '-': 'sub_',
+    '*': 'mul_',
+    'if': 'if_',
+    'print': 'print_',
+    'list': 'list_',
+    'count': 'count_',
+    'first': 'first_',
+    'last': 'last_',
+    'rest': 'rest_',
+    'pop': 'pop_',
+    'nth': 'nth_',
+    'map': 'map_'
+}
+
+
 class Writer(object):
 
     def __init__(self, exp, seed=0):
@@ -48,19 +68,8 @@ class Writer(object):
         return generator(head, tail)
 
     def resolve(self, symbol, callables):
-        symbols = {
-            '>': '_gt',
-            '<': '_lt',
-            '=': '_eq',
-            '+': '_add',
-            '-': '_sub',
-            '*': '_mul',
-            'if': '_if',
-            'print': '_print'
-        }
-
-        if symbol in symbols:
-            return symbols[symbol]
+        if symbol in SYMBOLS:
+            return SYMBOLS[symbol]
 
         if symbol in callables:
             return symbol
