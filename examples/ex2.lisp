@@ -6,3 +6,10 @@
                  (* (a 2 2) b c)) x y z)))
 
 (print (testing 1 2 3))
+
+(def scope
+     (fn (a b)
+         (let ((c 3))
+           (+ a b c))))
+
+(print (scope 1 2))

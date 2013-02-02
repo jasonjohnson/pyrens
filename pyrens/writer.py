@@ -106,10 +106,13 @@ class Writer(object):
 
             let.append('%s = %s' % (name, value))
 
-        self.function(mangle, '', '%s; return %s' % \
-                (';'.join(let), self.generate(tail[1], callables=callables)))
+        self.function(mangle,
+                      '____s',
+                      'exec(""); locals().update(____s); %s; return %s' %
+                      (';'.join(let), self.generate(tail[1],
+                                                    callables=callables)))
 
-        return '%s()' % mangle
+        return '%s(locals())' % mangle
 
     def _def(self, head, tail):
         name = tail[0]
