@@ -31,7 +31,9 @@ class Writer(object):
         generators = {
             'fn': self._fn,
             'let': self._let,
-            'def': self._def
+            'def': self._def,
+            'from': self._from,
+            'import': self._import
         }
 
         head = exp[0]
@@ -75,6 +77,15 @@ class Writer(object):
 
     def function(self, name='', args='', body=''):
         self.functions.append('def %s(%s): %s' % (name, args, body))
+
+    def _from(self, head, tail):
+        lib = tail[0]
+        items = tail[1:]
+        return 'from %s import %s' % (lib, ','.join(items))
+
+    def _import(self, head, tail):
+        lib = tail[0]
+        return 'import %s' % lib
 
     def _let(self, head, tail):
         mangle = self.mangle()
