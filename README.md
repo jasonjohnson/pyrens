@@ -7,12 +7,12 @@ Built-In
 --------
 ```lisp
 ; A few basic operations
-(> &args)
-(< &args)
-(+ &args)
-(- &args)
-(* &args)
-(= &args)
+(> & args)
+(< & args)
+(+ & args)
+(- & args)
+(* & args)
+(= & args)
 
 ; Branching
 (if expression then [else])
@@ -26,6 +26,30 @@ Definitions
 
 ```lisp
 (def myvalue 17)
+```
+
+Lists
+-----
+
+Lists are represented internally by Python tuples.
+
+```lisp
+(def mylist (list 1 2 3 4 5))
+
+(print "List: " mylist)  ; (1, 2, 3, 4, 5)
+(nth mylist 0)   ; 1
+(nth mylist 5)   ; None
+(first mylist)   ; 1
+(last mylist)    ; 5
+(count mylist)   ; 5
+(rest mylist)    ; (2, 3, 4, 5)
+(pop mylist)     ; (2, 3, 4, 5) - as a new list
+
+(def plus5
+  (fn (i)
+    (+ i 5)))
+
+(print (map plus5 mylist)) ; (6, 7, 8, 9, 10) - as a new list
 ```
 
 Functions
