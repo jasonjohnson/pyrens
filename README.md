@@ -1,7 +1,7 @@
 Pyrens
 ======
 
-Pyrens is an experimental Lisp runtime for Python. A basic Lisp syntax and Python interoperability are currently supported, as documented below. Please see the *examples* folder for more detailed code samples.
+Pyrens is an experimental Lisp compiler and runtime for Python. A basic Lisp syntax and Python interoperability are currently supported, as documented below. Please see the *examples* folder for more detailed code samples.
 
 Built-In
 --------
@@ -15,7 +15,7 @@ Built-In
 (= & args)
 
 ; Branching
-(if expression then [else])
+(if expression then & else)
 
 ; A generic printing facility
 (print "Hello World!")
@@ -77,6 +77,9 @@ Let Expressions
 
 Python Interop
 --------------
+
+Python interop may be removed entirely in the future. Right now it exists largely as a side-effect of the forgiving writer.
+
 ```lisp
 (import requests)
 
