@@ -106,12 +106,16 @@ class Writer(object):
 
             let.append('%s = %s' % (name, value))
 
-        self.function(mangle,
-                      '____s',
-                      'exec(""); locals().update(____s); %s; return %s' %
-                      (';'.join(let), self.generate(tail[1],
-                                                    callables=callables)))
+        # The empty exec() prevents python from making assumptions about the
+        # local scope of the function. This allows our locals() update to work.
+        args = '___s'
+        body = 'exec(""); locals().update(___s); %s; return %s' % \
+               (';'.join(let), self.generate(tail[1], callables=callables))
 
+        self.function(mangle, args, body)
+
+        # Passing in the current locals() state allows variables defined in the
+        # current scope to be available inside our let block.
         return '%s(locals())' % mangle
 
     def _def(self, head, tail):
