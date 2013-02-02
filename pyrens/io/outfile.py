@@ -1,6 +1,7 @@
 from pyrens.reader import Reader
 from pyrens.writer import Writer
 
+
 class Outfile(object):
 
     def __init__(self, file_name):
@@ -32,4 +33,3 @@ class Outfile(object):
                 outfile.write("\n")
 
                 seed += 1
-

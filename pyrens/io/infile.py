@@ -19,14 +19,18 @@ class Infile(object):
                 if not char:
                     break
 
-                if char == '(': depth += 1
-                if char == ')': depth -= 1
+                if char == ')':
+                    depth -= 1
 
-                if all([self.state == Infile.SCAN, depth == 1, char == '(']):
+                if all([self.state == Infile.SCAN,
+                        depth == 0,
+                        char == '(']):
                     start = position
                     self.state = Infile.CONSUME
 
-                if all([self.state == Infile.CONSUME, depth == 0, char == ')']):
+                if all([self.state == Infile.CONSUME,
+                        depth == 0,
+                        char == ')']):
                     end = position
                     self.state = Infile.SCAN
 
@@ -34,6 +38,9 @@ class Infile(object):
                     self.positions.append((start, end))
                     start = None
                     end = None
+
+                if char == '(':
+                    depth += 1
 
                 position += 1
 
@@ -47,4 +54,3 @@ class Infile(object):
                 exps.append(infile.read(size))
 
         return exps
-

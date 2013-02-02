@@ -48,7 +48,7 @@ class Reader(object):
                     for j, y in enumerate(self.cleaned[i:]):
                         if y[-1] == '"':
                             self.cleaned[i:i+j+1] = \
-                                    [' '.join(self.cleaned[i:i+j+1])]
+                                [' '.join(self.cleaned[i:i+j+1])]
                             self.string()
 
     def scan(self):
@@ -59,7 +59,7 @@ class Reader(object):
             if symbol is '(':
                 start.append(i)
             elif symbol is ')':
-                self.scanned.append((start.pop(),i+1))
+                self.scanned.append((start.pop(), i+1))
 
     def collapse(self):
         self.collapsed = list(self.cleaned)
@@ -93,4 +93,3 @@ class Reader(object):
                 pass
 
         return self.collapsed.pop()
-
