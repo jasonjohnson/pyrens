@@ -44,12 +44,27 @@ Lists are represented internally by Python tuples.
 (count mylist)   ; 5
 (rest mylist)    ; (2, 3, 4, 5)
 (pop mylist)     ; (2, 3, 4, 5) - as a new list
+(cons 0 mylist)  ; (0, 1, 2, 3, 4, 5) - as a new list
 
 (def plus5
   (fn (i)
     (+ i 5)))
 
 (print (map plus5 mylist)) ; (6, 7, 8, 9, 10) - as a new list
+```
+
+Hash Maps
+---------
+
+Hash Maps are backed by Python dictionaries. However, they are not mutable. To modify a hash, use *merge* to create a new hash containing elements from both.
+
+```lisp
+(def myhash1 (hash "key1" 1 "key2" (list 1 2 3)))
+(def myhash2 (hash "key3" 3))
+
+(get myhash1 "key1")            ; 1
+(nth (get myhash1 "key2") 1)    ; 2
+(count (merge myhash1 myhash2)) ; 3
 ```
 
 Functions
