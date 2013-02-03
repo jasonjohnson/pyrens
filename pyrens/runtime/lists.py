@@ -6,6 +6,10 @@ def count_(arg1):
     return len(arg1)
 
 
+def cons_(arg1, arg2):
+    return (arg1,) + arg2
+
+
 def first_(arg1):
     try:
         return arg1[0]

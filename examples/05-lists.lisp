@@ -1,4 +1,6 @@
 (def mylist (list 1 2 3 4 5))
+(def mylist2 (list 6))
+
 (def mystrings (list "Pyrens" "is" "awesome!"))
 
 (def plus5
@@ -30,3 +32,6 @@
 
 (print (first mylenghts))
 (print (rest mylenghts))
+
+(print mylist2)
+(print (cons 5 mylist2))

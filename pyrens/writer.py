@@ -7,14 +7,22 @@ SYMBOLS = {
     '*': 'mul_',
     'if': 'if_',
     'print': 'print_',
+
+    # List/Collections functions
     'list': 'list_',
     'count': 'count_',
+    'cons': 'cons_',
     'first': 'first_',
     'last': 'last_',
     'rest': 'rest_',
     'pop': 'pop_',
     'nth': 'nth_',
-    'map': 'map_'
+    'map': 'map_',
+
+    # Hash functions
+    'hash': 'hash_',
+    'get': 'get_',
+    'merge': 'merge_',
 }
 
 
