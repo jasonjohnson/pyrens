@@ -1,7 +1,7 @@
 Pyrens
 ======
 
-Pyrens is an experimental Lisp compiler and runtime for Python. A basic Lisp syntax and Python interoperability are currently supported, as documented below. Please see the *examples* folder for more detailed code samples.
+Pyrens is an experimental Lisp compiler for Python. A basic Lisp syntax and Python interoperability are currently supported, as documented below. Please see the *examples* folder for more detailed code samples.
 
 Built-In
 --------
@@ -12,6 +12,7 @@ Built-In
 (+ & args)
 (- & args)
 (* & args)
+(/ & args)
 (= & args)
 
 ; Branching
@@ -59,8 +60,8 @@ Hash Maps
 Hash Maps are backed by Python dictionaries. However, they are not mutable. To modify a hash, use *merge* to create a new hash containing elements from both.
 
 ```lisp
-(def myhash1 (hash "key1" 1 "key2" (list 1 2 3)))
-(def myhash2 (hash "key3" 3))
+(def myhash1 (hash-map "key1" 1 "key2" (list 1 2 3)))
+(def myhash2 (hash-map "key3" 3))
 
 (get myhash1 "key1")            ; 1
 (nth (get myhash1 "key2") 1)    ; 2
