@@ -1,5 +1,6 @@
 (def mylist (list 1 2 3 4 5))
 (def mylist2 (list 6))
+(def mylist3 (list 7 (+ 7 1)))
 
 (def mystrings (list "Pyrens" "is" "awesome!"))
 
@@ -12,13 +13,13 @@
          (count s)))
 
 (print "List: " mylist)
+(print "My Strings: " mystrings)
 
 (print (nth mylist 0))
 (print (nth mylist 1))
 (print (nth mylist 2))
 (print (nth mylist 3))
 (print (nth mylist 4))
-(print (nth mylist 5))
 
 (print "Count: " (count mylist))
 (print "First: " (first mylist))

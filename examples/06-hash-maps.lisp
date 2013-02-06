@@ -1,5 +1,5 @@
-(def myhash1 (hash "key1" (list 1 2 3) "key2" 2))
-(def myhash2 (hash "key3" 3))
+(def myhash1 (hash-map "key1" (list 1 2 3) "key2" 2))
+(def myhash2 (hash-map "key3" 3))
 (def myhash3 (merge myhash1 myhash2))
 
 (print (get myhash1 "key1"))

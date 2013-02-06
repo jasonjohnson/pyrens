@@ -1,29 +1,6 @@
-SYMBOLS = {
-    '>': 'gt_',
-    '<': 'lt_',
-    '=': 'eq_',
-    '+': 'add_',
-    '-': 'sub_',
-    '*': 'mul_',
-    'if': 'if_',
-    'print': 'print_',
-
-    # List/Collections functions
-    'list': 'list_',
-    'count': 'count_',
-    'cons': 'cons_',
-    'first': 'first_',
-    'last': 'last_',
-    'rest': 'rest_',
-    'pop': 'pop_',
-    'nth': 'nth_',
-    'map': 'map_',
-
-    # Hash functions
-    'hash': 'hash_',
-    'get': 'get_',
-    'merge': 'merge_',
-}
+from pyrens.generators.core import Core
+from pyrens.generators.lists import Lists
+from pyrens.generators.hash_maps import HashMaps
 
 
 class Writer(object):
@@ -35,6 +12,11 @@ class Writer(object):
         self.mangled = 0
         self.mangled_names = []
         self.functions = []
+        self.generators = [
+            Core(self),
+            Lists(self),
+            HashMaps(self)
+        ]
 
     def get(self):
         if not self.result:
@@ -56,33 +38,31 @@ class Writer(object):
             callables = []
 
         generator = self._generic
-        generators = {
+        manglers = {
             'fn': self._fn,
-            'let': self._let,
-            'def': self._def,
-            'from': self._from,
-            'import': self._import
+            'let': self._let
         }
 
         head = exp[0]
         tail = exp[1:]
 
-        if head in generators:
-            generator = generators[head]
+        if head in manglers:
+            generator = manglers[head]
+        else:
+            for gen in self.generators:
+                if head in gen.symbols:
+                    method = getattr(gen, gen.symbols[head])
+                    return method(head, tail)
 
+        # If this generator call has been passed callables, we can safely
+        # assume subsequent generators will expect them.
         if callables:
             return generator(head, tail, callables)
 
         return generator(head, tail)
 
-    def resolve(self, symbol, callables):
-        if symbol in SYMBOLS:
-            return SYMBOLS[symbol]
-
-        if symbol in callables:
-            return symbol
-
-        return None
+    def generate_all(self, exps):
+        return [self.generate(exp) for exp in exps]
 
     def complex(self, exp):
         return any([isinstance(e, list) for e in exp])
@@ -94,15 +74,6 @@ class Writer(object):
 
     def function(self, name='', args='', body=''):
         self.functions.append('def %s(%s): %s' % (name, args, body))
-
-    def _from(self, head, tail):
-        lib = tail[0]
-        items = tail[1:]
-        return 'from %s import %s' % (lib, ','.join(items))
-
-    def _import(self, head, tail):
-        lib = tail[0]
-        return 'import %s' % lib
 
     def _let(self, head, tail):
         mangle = self.mangle()
@@ -135,12 +106,6 @@ class Writer(object):
         # current scope to be available inside our let block.
         return '%s(locals())' % mangle
 
-    def _def(self, head, tail):
-        name = tail[0]
-        body = self.generate(tail[1])
-
-        return '%s = %s' % (name, body)
-
     def _fn(self, head, tail):
         mangle = self.mangle()
 
@@ -159,12 +124,10 @@ class Writer(object):
             if isinstance(e, list):
                 tail[i] = self.generate(e, callables)
 
-        symbol = self.resolve(head, callables)
+        if head in callables:
+            return '%s(%s)' % (head, ','.join(tail))
 
-        if not symbol:
-            return self._raw(head, tail)
-
-        return '%s(%s)' % (symbol, ','.join(tail))
+        return self._raw(head, tail)
 
     def _raw(self, head, tail=None):
         if isinstance(head, str) and isinstance(tail, str):
