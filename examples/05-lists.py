@@ -1,3 +1,5 @@
+from functools import partial
+import socket
 mylist = (1,2,3,4,5,)
 mylist2 = (6,)
 mylist3 = (7,reduce(lambda a, b: a + b, (7,1,)),)

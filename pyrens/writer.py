@@ -1,21 +1,25 @@
 from pyrens.generators.core import Core
 from pyrens.generators.lists import Lists
 from pyrens.generators.hash_maps import HashMaps
+from pyrens.generators.sockets import Sockets
+from pyrens.generators.strings import Strings
 
 
 class Writer(object):
 
     def __init__(self, exp, seed=0):
         self.exp = exp
-        self.result = ""
         self.seed = seed
+        self.result = ""
         self.mangled = 0
         self.mangled_names = []
         self.functions = []
         self.generators = [
             Core(self),
             Lists(self),
-            HashMaps(self)
+            HashMaps(self),
+            Sockets(self),
+            Strings(self)
         ]
 
     def get(self):
@@ -131,10 +135,10 @@ class Writer(object):
 
     def _raw(self, head, tail=None):
         if isinstance(head, str) and isinstance(tail, str):
-            return '%s%s' % (head, tail)
+            return ('%s%s' % (head, tail)).replace('-', '_')
 
         if isinstance(head, str) and isinstance(tail, list):
             if len(tail) > 0 or head[0].isalpha():
-                return '%s(%s)' % (head, ','.join(tail))
+                return '%s(%s)' % (head.replace('-', '_'), ','.join(tail))
 
         return head

@@ -19,7 +19,7 @@ class Core(object):
 
     def _def(self, head, tail):
         """(def x 123)"""
-        name = tail[0]
+        name = tail[0].replace('-', '_')
         body = self.writer.generate(tail[1])
 
         return '%s = %s' % (name, body)
@@ -82,4 +82,5 @@ class Core(object):
     def _import(self, head, tail):
         """(import module.submodule)"""
         lib = tail[0]
+
         return 'import %s' % lib

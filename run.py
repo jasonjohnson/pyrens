@@ -18,4 +18,3 @@ for file_name_in in file_names:
     outfile = Outfile(file_name_out)
     outfile.load(infile.expressions())
     outfile.write()
-
